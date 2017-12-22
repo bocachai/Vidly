@@ -1,0 +1,38 @@
+﻿@model List<Vidly.Models.Movie>
+@{
+    ViewBag.Title = "Movie List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var className = Model.Count > 1 ? "popular" : null;
+}
+
+<div class="container">
+    <h2>Movies</h2>
+    <p>Movies in list:</p>
+    @if (Model.Count == 0)
+    {
+        <text>No one no movies in record</text>
+    }
+    else
+    {
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th> Movie </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in Model)
+                {
+                    <tr>
+                        <td>@movie.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+
+</div>

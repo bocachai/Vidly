@@ -16,8 +16,8 @@ namespace Vidly.Controllers
             var movie = new Movie { Name = "Shrek!" };
             var customers = new List<Customer>
             {
-                new Models.Customer { Name="Customer 1"},
-                new Models.Customer { Name="Customer 2"}
+                new Models.Customer { Name="Joe Doe"},
+                new Models.Customer { Name="Freddy Porter"}
             };
             var viewModel = new RandomMovieViewModel
             {
@@ -26,6 +26,19 @@ namespace Vidly.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult Index()
+        {
+            var movies = new List<Movie>
+            { 
+                 new Movie {Name = "Shrek!" },
+                 new Movie {Name = "Tanggled" }
+            };
+            
+
+            return View(movies);
         }
 
         public ActionResult Edit(int id)
