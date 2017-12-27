@@ -18,13 +18,14 @@
             <thead>
                 <tr>
                     <th> Customer </th>
-                </tr>
+                    <th> Membership Type</tr>
             </thead>
             <tbody>
                 @foreach (var customer in Model)
                 {
                     <tr>
-                        <td><a href="/customers/details/@customer.Name"> @customer.Name </a></td>
+                        <td><a href="/customers/details/@customer.Id"> @customer.Name </a></td>
+                        <td>@customer.MembershipType.Description</td>
                     </tr>
                 }
             </tbody>

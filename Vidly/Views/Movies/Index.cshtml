@@ -21,6 +21,8 @@
             <thead>
                 <tr>
                     <th> Movie </th>
+                    <th> Genre </th>
+                    <th> Stock </th>
                 </tr>
             </thead>
             <tbody>
@@ -28,6 +30,19 @@
                 {
                     <tr>
                         <td>@movie.Name</td>
+                        <td>@movie.Genre.Name</td>
+                        @if (@movie.NumberInStock == 0)
+                        {
+                            <td>out of stock</td>
+                        }
+                        else if (@movie.NumberInStock < 3)
+                        {
+                            <td>running low (only @movie.NumberInStock left)</td>
+                        }
+                        else
+                        {
+                            <td>in stock (@movie.NumberInStock left)</td>
+                        }
                     </tr>
                 }
             </tbody>

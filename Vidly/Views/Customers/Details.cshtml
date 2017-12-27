@@ -5,4 +5,19 @@
 }
 
 <h2>@Model.Name</h2>
+@if (@Model.DateOfBirth.HasValue)
+{
+    <div>@Html.LabelFor(d => d.DateOfBirth): @Model.DateOfBirth.Value.ToShortDateString()</div>
+}
+
+@if (Model.MembershipType.DurationInMonths > 0)
+{
+    <div><b>@Model.MembershipType.Description Membership</b></div>
+    <div>@Model.MembershipType.DurationInMonths month(s)</div>
+    <div>@Model.MembershipType.DiscountRate% off</div>
+}
+else
+{
+    <div>@Model.MembershipType.Description</div>
+}
 
