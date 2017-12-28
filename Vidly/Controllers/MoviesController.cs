@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Vidly.Models;
 using Vidly.ViewModels;
+using System;
 
 namespace Vidly.Controllers
 {
@@ -15,7 +16,13 @@ namespace Vidly.Controllers
         {
             _context = new Models.ApplicationDbContext();
         }
-        
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
+
         // GET: /Random
         public ActionResult Random()
         {
@@ -47,9 +54,51 @@ namespace Vidly.Controllers
             return View(movie);
         }
 
+        public ActionResult New()
+        {
+            var genres = _context.Genres.ToList();
+            var viewModel = new MovieFormViewModel
+            {
+                Genres = genres
+            };
+            return View("MovieForm", viewModel);
+        }
+
         public ActionResult Edit(int id)
         {
-            return Content("Id= " + id);
+            var movie = _context.Movies.SingleOrDefault(c => c.Id == id);
+
+            if (movie == null)
+                return HttpNotFound();
+
+            var genres = _context.Genres.ToList();
+            var viewModel = new MovieFormViewModel
+            {
+                Movie = movie,
+                Genres = genres
+            };
+
+            return View("MovieForm", viewModel);
+        }
+
+        public ActionResult Save(Movie movie)
+        {
+            if (movie.Id == 0)
+            {
+                movie.DateAdded = DateTime.Now;
+                _context.Movies.Add(movie);
+            }
+            else
+            {
+                var movieInDb = _context.Movies.Single(m => m.Id == movie.Id);
+                movieInDb.Name = movie.Name;
+                movieInDb.NumberInStock = movie.NumberInStock;
+                movieInDb.ReleaseDate = movie.ReleaseDate;
+                movieInDb.GenreId = movie.GenreId;
+                movieInDb.DateAdded = movie.DateAdded;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public ActionResult Index(int? pageIndex, string sortBy)

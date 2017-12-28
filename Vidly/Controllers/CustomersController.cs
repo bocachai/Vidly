@@ -28,8 +28,9 @@ namespace Vidly.Controllers
             {
                 MembershipTypes = membershipTypes
             };
-            return View(viewModel);
+            return View("CustomerForm", viewModel);
         }
+
         [HttpPost]
         public ActionResult Save(Customer customer)
         {

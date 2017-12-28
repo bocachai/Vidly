@@ -10,7 +10,7 @@
 
 <div class="container">
     <h2>Movies</h2>
-    <p>Movies in list:</p>
+
     @if (Model.Count == 0)
     {
         <text>No one no movies in record</text>
@@ -20,6 +20,7 @@
         <table class="table table-hover table-bordered">
             <thead>
                 <tr>
+                    <th></th>
                     <th> Movie </th>
                     <th> Genre </th>
                     <th> Stock </th>
@@ -29,6 +30,11 @@
                 @foreach (var movie in Model)
                 {
                     <tr>
+                        <td>
+                            <a href="/movies/edit/@movie.Id">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </td>
                         <td>
                             @Html.ActionLink(@movie.Name, "Details", new { id = movie.Id })
                         </td>
@@ -52,4 +58,5 @@
 
     }
 
+    @Html.ActionLink("Add Movie", "New")
 </div>
