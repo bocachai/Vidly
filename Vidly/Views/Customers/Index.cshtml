@@ -17,6 +17,7 @@
         <table class="table table-hover table-bordered">
             <thead>
                 <tr>
+                    <th></th>
                     <th> Customer </th>
                     <th> Membership Type</tr>
             </thead>
@@ -24,7 +25,14 @@
                 @foreach (var customer in Model)
                 {
                     <tr>
-                        <td><a href="/customers/details/@customer.Id"> @customer.Name </a></td>
+                        <td>
+                            <a href="/customers/edit/@customer.Id">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/customers/details/@customer.Id"> @customer.Name </a>
+                        </td>
                         <td>@customer.MembershipType.Description</td>
                     </tr>
                 }
