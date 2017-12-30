@@ -236,10 +236,15 @@
     <Compile Include="Migrations\201712270543207_AddMovieDetails.Designer.cs">
       <DependentUpon>201712270543207_AddMovieDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712300847163_AddMovieValidation.cs" />
+    <Compile Include="Migrations\201712300847163_AddMovieValidation.Designer.cs">
+      <DependentUpon>201712300847163_AddMovieValidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Genre.cs" />
+    <Compile Include="Models\HelperClasses\Helper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MembershipType.cs" />
@@ -361,6 +366,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712270543207_AddMovieDetails.resx">
       <DependentUpon>201712270543207_AddMovieDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712300847163_AddMovieValidation.resx">
+      <DependentUpon>201712300847163_AddMovieValidation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

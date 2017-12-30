@@ -19,12 +19,7 @@ namespace Vidly.Models
             if (customer.DateOfBirth == null)
                 return new ValidationResult("Date of birth is required");
 
-            DateTime now = DateTime.Today;
-            int age = now.Year - customer.DateOfBirth.GetValueOrDefault().Year;
-            if (customer.DateOfBirth.GetValueOrDefault() > now.AddYears(-age))
-                age--;
-
-            return (age < 18)
+            return (Helper.GetAge(customer.DateOfBirth.GetValueOrDefault()) < 18)
                 ? new ValidationResult("Customer must be at least 18 years of age")
                 : ValidationResult.Success;
         }
