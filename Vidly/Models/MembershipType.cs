@@ -8,11 +8,21 @@ namespace Vidly.Models
 {
     public class MembershipType
     {
+        #region Properties
         public byte Id { get; set; }
         [StringLength(100)]
         public string Description { get; set; }
         public short SignUpFee { get; set; }
         public byte DurationInMonths { get; set; }
         public byte DiscountRate { get; set; }
+        #endregion
+        
+        #region Static Members
+        public static readonly byte Unkown = 0;
+        public static readonly byte PayAsYouGo = 1;
+        public static readonly byte Monthly = 2;
+        public static readonly byte Quaterly = 3;
+        public static byte Annual = 4;
+        #endregion
     }
 }

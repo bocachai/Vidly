@@ -8,7 +8,7 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-
+        #region Private, Consturctor and Dispose
         private ApplicationDbContext _context;
 
         public CustomersController()
@@ -19,21 +19,25 @@ namespace Vidly.Controllers
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
-        }
+        } 
+        #endregion
 
-        public ActionResult New()
+        #region HttpPost
+            [HttpPost]
+            public ActionResult Save(Customer customer)
         {
-            var membershipTypes = _context.MembershipTypes.ToList();
-            var viewModel = new CustomerFormViewModel
+            if (!ModelState.IsValid)
             {
-                MembershipTypes = membershipTypes
-            };
-            return View("CustomerForm", viewModel);
-        }
+                var customerFormModel = new CustomerFormViewModel
+                {
+                    Customer = customer,
+                    MembershipTypes = _context.MembershipTypes.ToList()
+                };
 
-        [HttpPost]
-        public ActionResult Save(Customer customer)
-        {
+                return View("CustomerForm", customerFormModel);
+            }
+
+
             if (customer.Id == 0)
                 _context.Customers.Add(customer);
             else
@@ -47,29 +51,42 @@ namespace Vidly.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
-     
-        [HttpGet]
-        public ActionResult Index()
-        {
-            var customers = _context.Customers.Include(c=>c.MembershipType).ToList();
+        #endregion
 
-            return View(customers);
-        }
+        #region HttpGet
+            [HttpGet]
+            public ActionResult Index()
+            {
+                var customers = _context.Customers.Include(c => c.MembershipType).ToList();
 
-        [HttpGet]
-        [Route("customers/details/{id}")]
+                return View(customers);
+            }
 
-        public ActionResult Details(int id)
-        {
-            var customer = _context.Customers.Include(c=>c.MembershipType).SingleOrDefault(c => c.Id == id);
+            [HttpGet]
+            [Route("customers/details/{id}")]
+            public ActionResult Details(int id)
+            {
+                var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
 
-            if (customer == null)
-                return HttpNotFound();
-            
-            return View(customer);
-        }
+                if (customer == null)
+                    return HttpNotFound();
 
-        public ActionResult Edit(int id)
+                return View(customer);
+            }
+
+            [HttpGet]
+            public ActionResult New()
+            {
+                var membershipTypes = _context.MembershipTypes.ToList();
+                var viewModel = new CustomerFormViewModel
+                {
+                    MembershipTypes = membershipTypes
+                };
+                return View("CustomerForm", viewModel);
+            }
+
+            [HttpGet]
+            public ActionResult Edit(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
@@ -85,5 +102,7 @@ namespace Vidly.Controllers
 
             return View("CustomerForm", viewModel);
         }
+        #endregion
+
     }
 }
