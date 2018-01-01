@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Vidly.Models;
 using Vidly.ViewModels;
+using Vidly.Dtos;
 
 namespace Vidly.Controllers.Api
 {
@@ -20,38 +21,42 @@ namespace Vidly.Controllers.Api
         }
 
         //GET api/customers
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<CustomerDto> GetCustomers()
         {
-            return _context.Customers.ToList();
+            return _context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
         }
 
         //GET api/customers/1
-        public Customer GetCustomer(int id)
+        public CustomerDto GetCustomer(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            return customer; 
+            return Mapper.Map<Customer, CustomerDto>(customer); 
         }
 
         // POST api/customers
         [HttpPost]
-        public Customer CreateCustomer(Customer customer)
+        public CustomerDto CreateCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
+            var customer = Mapper.Map<CustomerDto, Customer>(customerDto);
+
             _context.Customers.Add(customer);
             _context.SaveChanges();
-            return customer;
+
+            customerDto.Id = customer.Id;
+            return customerDto;
         }
 
 
         //PUT api/customers/1
         [HttpPut]
-        public void EditCustomer(int id, Customer customer)
+        public void EditCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -61,12 +66,7 @@ namespace Vidly.Controllers.Api
             if (customerInDb == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            //Mapper.Initialize(cfg => cfg.CreateMap<CustomerFormViewModel, Customer>());
-
-            customerInDb.Name = customer.Name;
-            customerInDb.DateOfBirth = customer.DateOfBirth;
-            customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
-            customerInDb.MembershipTypeId = customer.MembershipTypeId;
+            Mapper.Map(customerDto, customerInDb);
 
             _context.SaveChanges();
         }
