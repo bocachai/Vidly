@@ -21,7 +21,9 @@ namespace Vidly.Dtos
         [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
         public DateTime? DateOfBirth { get; set; }
 
-        public byte MembershipTypeId { get; set; } 
+        public byte MembershipTypeId { get; set; }
+
+        public MembershipTypeDto MembershipType { get; set; }
         #endregion
     }
 }

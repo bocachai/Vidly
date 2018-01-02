@@ -8,42 +8,19 @@
 <div class="container">
     <h2>Customers</h2>
     <p>Registered Customers</p>
-    @if (Model.Count == 0)
-    {
-        <text>There are no customers registered</text>
-    }
-    else
-    {
+    
         <table id="customers" class="table table-hover table-bordered">
             <thead>
             <tr>
-                <th></th>
-                <th></th>
+                <th width="10"></th>
+                <th width="10"></th>
                 <th> Customer </th>
                 <th> Membership Type</tr>
             </thead>
             <tbody>
-            @foreach (var customer in Model)
-            {
-                <tr>
-                    <td width="10">
-                        <a href="/customers/edit/@customer.Id">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </a>
-                    </td>
-                    <td width="10">
-                        <button data-customer-id="@customer.Id" class="btn-link glyphicon glyphicon-trash"></button>
-                    </td>
-                    <td>
-                        <a href="/customers/details/@customer.Id"> @customer.Name </a>
-                    </td>
-                    <td>@customer.MembershipType.Description</td>
-                </tr>
-            }
+            
             </tbody>
         </table>
-
-    }
 
     @Html.ActionLink("Add Customer", "New")
 </div>
@@ -51,8 +28,35 @@
 @section scripts
 {
     <script>
-        $(document).ready(function () {
-            $("#customers").DataTable();
+        $(document).ready(function() {
+            var table = $("#customers").DataTable({
+                ajax:
+                {
+                    url: "/api/customers",
+                    dataSrc: ""
+                },
+                columns:
+                [
+                    {
+                        data: "name",
+                        render: function (data, type, customer) {
+                            return "<a href='/customers/edit/" + customer.id + "'> <span class='glyphicon glyphicon-pencil'></span> </a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link glyphicon glyphicon-trash'  data-customer-id=" + data + "></button>";
+                        }
+                    },
+                    {
+                        data: "name"
+                    },
+                    {
+                        data: "membershipType.description"
+                    }
+                ]
+            });
 
             $("#customers").on("click", ".glyphicon-trash",
                 function() {
@@ -65,7 +69,7 @@
                                 url: "/api/customers/" + button.attr("data-customer-id"),
                                 method: "DELETE",
                                 success: function () {
-                                    button.parents("tr").remove();
+                                    table.row(button.parents("tr")).remove().draw();
                                 }
                             });
                     });
