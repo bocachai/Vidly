@@ -26,12 +26,12 @@
             @foreach (var customer in Model)
             {
                 <tr>
-                    <td>
+                    <td width="10">
                         <a href="/customers/edit/@customer.Id">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
                     </td>
-                    <td>
+                    <td width="10">
                         <button data-customer-id="@customer.Id" class="btn-link glyphicon glyphicon-trash"></button>
                     </td>
                     <td>
@@ -51,8 +51,10 @@
 @section scripts
 {
     <script>
-        $(document).ready(function() {
-            $("#customers .glyphicon-trash").on("click",
+        $(document).ready(function () {
+            $("#customers").DataTable();
+
+            $("#customers").on("click", ".glyphicon-trash",
                 function() {
 
                     var button = $(this);
